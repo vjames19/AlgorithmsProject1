@@ -1,4 +1,6 @@
-package com.vjames19;
+package com.vjames19.generators;
+
+import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,7 +11,7 @@ import static com.vjames19.Utils.isGreater;
 /**
  * Created by vjames19 on 2/22/15.
  */
-public class PermGenerator_v2 implements P_ADT {
+public class PermGenerator_v3 implements P_ADT {
 
 
     private List<MobileEntity<Integer>> entityList;
@@ -28,7 +30,7 @@ public class PermGenerator_v2 implements P_ADT {
      * @param n Range of the number of this sequence [0..n-1]
      * @param k length of the sequence
      */
-    public PermGenerator_v2(int n, int k) {
+    public PermGenerator_v3(int n, int k) {
         if (n < 0 || k < 0) {
             throw new IllegalArgumentException();
         }
@@ -45,9 +47,9 @@ public class PermGenerator_v2 implements P_ADT {
     }
 
     @Override
-    public int[] next() throws IllegalStateException {
+    public int[] next() throws InvalidStateException {
         if (!hasMore()) {
-            throw new IllegalStateException();
+            throw new InvalidStateException("No more elements.");
         }
 
         int[] current = toArray();
@@ -61,7 +63,7 @@ public class PermGenerator_v2 implements P_ADT {
 
         MobileEntity<Integer> largestEntity = entityList.get(largestMobileIndex);
         // Swap the adjacent element in the direction of the largest mobile entity.
-        if (largestEntity.goinRight()) {
+        if (largestEntity.goingRight()) {
             Collections.swap(entityList, largestMobileIndex, largestMobileIndex + 1);
         } else {
             Collections.swap(entityList, largestMobileIndex, largestMobileIndex - 1);
@@ -109,7 +111,7 @@ public class PermGenerator_v2 implements P_ADT {
             return true;
         }
 
-        if (entity.goinRight() && index != entityList.size() - 1 && entity.compareTo(entityList.get(index + 1)) > 0) {
+        if (entity.goingRight() && index != entityList.size() - 1 && entity.compareTo(entityList.get(index + 1)) > 0) {
             return true;
         }
 
@@ -124,5 +126,39 @@ public class PermGenerator_v2 implements P_ADT {
         }
 
         return array;
+    }
+
+    /**
+     * A MobileEntity has a direction either left or right.
+     */
+    public static class MobileEntity<E extends Comparable<E>> implements Comparable<MobileEntity<E>>  {
+
+        private E entity;
+        private int direction = -1;
+
+        public MobileEntity(E entity) {
+            this.entity = entity;
+        }
+
+        public void reverseDirection() {
+            direction = -direction;
+        }
+
+        public boolean goingLeft() {
+            return direction == -1;
+        }
+
+        public boolean goingRight() {
+            return direction == 1;
+        }
+
+        @Override
+        public int compareTo(MobileEntity<E> other) {
+            return entity.compareTo(other.entity);
+        }
+
+        public E getEntity() {
+            return entity;
+        }
     }
 }

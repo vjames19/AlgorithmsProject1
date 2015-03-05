@@ -1,15 +1,20 @@
 package com.vjames19;
 
+import com.vjames19.generators.P_ADT;
+import com.vjames19.generators.PermGenerator_v2;
+
 import java.util.Arrays;
 
 public class Main {
 
     public static void main(String[] args) {
-        int n = 4;
-        int k = 4;
+        int n = 3;
+        int k = 2;
 //       P_ADT seq = new SubsetsV2(n);
 //       P_ADT seq = new SeqGenerator(n, k);
+//       P_ADT seq = new SeqGenerator(n, k);
         P_ADT seq = new PermGenerator_v2(n, k);
+//        P_ADT seq = new PermGenerator_v3(n, k);
 
         while (seq.hasMore()) {
             System.out.println(Arrays.toString(seq.next()));

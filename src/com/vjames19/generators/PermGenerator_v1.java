@@ -1,16 +1,23 @@
-package com.vjames19;
+package com.vjames19.generators;
+
+import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by vjames19 on 2/22/15.
+ * Generates permutations by only using the sequences that don't have repetitions.
  */
 public class PermGenerator_v1 implements P_ADT {
 
     private SeqGenerator generator;
-    Set<Integer> set = new HashSet<>();
-    private int[] current;
+
+    /**
+     * Holds the next permutation to return.
+     */
+    private int[] next;
+
+    private Set<Integer> comparisonSet = new HashSet<>();
 
     public PermGenerator_v1(int n, int k) {
         generator = new SeqGenerator(n, k);
@@ -19,12 +26,16 @@ public class PermGenerator_v1 implements P_ADT {
 
     @Override
     public boolean hasMore() {
-        return current != null;
+        return next != null;
     }
 
     @Override
-    public int[] next() throws IllegalStateException {
-        int[] next = current;
+    public int[] next() throws InvalidStateException {
+        if (!hasMore()) {
+            throw new InvalidStateException("No more elements");
+        }
+
+        int[] next = this.next;
         computeNext();
         return next;
     }
@@ -32,7 +43,7 @@ public class PermGenerator_v1 implements P_ADT {
     @Override
     public void reset() {
         generator.reset();
-        current = null;
+        next = null;
         computeNext();
     }
 
@@ -40,21 +51,21 @@ public class PermGenerator_v1 implements P_ADT {
         while(generator.hasMore()) {
             int[] sequence = generator.next();
             if (hasNoRepeatedValue(sequence)) {
-                current = sequence;
+                next = sequence;
                 return;
             }
         }
 
-        current = null;
+        next = null;
     }
 
     private boolean hasNoRepeatedValue(int[] sequence) {
-        set.clear();
+        comparisonSet.clear();
         for(int i : sequence) {
-            if (set.contains(i)) {
+            if (comparisonSet.contains(i)) {
                 return false;
             } else {
-                set.add(i);
+                comparisonSet.add(i);
             }
         }
 

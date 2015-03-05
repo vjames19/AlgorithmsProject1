@@ -1,18 +1,21 @@
 package com.vjames19;
 
+import com.vjames19.generators.PermGenerator_v2;
+
 import java.util.Arrays;
 
 /**
- * Created by vjames19 on 2/22/15.
+ * Solves the job assignment problem using a brute-force algorithm. It generates all the possible permutations and
+ * searches for the one with the minimum cost.
  */
 public class JobAssignmentProblemSolver {
 
-    private PermGenerator_v1 permutationGenerator;
+    private PermGenerator_v2 permutationGenerator;
     private int[][] cost;
 
     public JobAssignmentProblemSolver(int[][] cost) {
         this.cost = cost;
-        permutationGenerator = new PermGenerator_v1(cost.length, cost.length);
+        permutationGenerator = new PermGenerator_v2(cost.length, cost.length);
     }
 
     public int[] solve() {

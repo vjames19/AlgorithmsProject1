@@ -1,10 +1,13 @@
-package com.vjames19;
+package com.vjames19.generators;
+
+import com.vjames19.Utils;
+import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by vjames19 on 2/22/15.
+ * Generates the power set of given set of numbers in the range [1..n]
  */
 public class SubsetsV1 implements P_ADT {
 
@@ -15,8 +18,11 @@ public class SubsetsV1 implements P_ADT {
      */
     private SeqGenerator generator;
 
-    public SubsetsV1(int n) {
 
+    /**
+     * @param n Range of the numbers in the set, [1..n]
+     */
+    public SubsetsV1(int n) {
         generator = new SeqGenerator(2, n);
     }
 
@@ -26,7 +32,11 @@ public class SubsetsV1 implements P_ADT {
     }
 
     @Override
-    public int[] next() throws IllegalStateException {
+    public int[] next() throws InvalidStateException {
+        if (!hasMore()) {
+            throw new InvalidStateException("No more elements.");
+        }
+
         int[] sequence = generator.next();
 
         List<Integer> list = new ArrayList<>();

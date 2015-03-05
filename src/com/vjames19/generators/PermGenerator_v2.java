@@ -34,6 +34,8 @@ public class PermGenerator_v2 implements P_ADT {
      */
     private int range;
 
+    private boolean didGenerateTheEmpty = false;
+
     /**
      * @param n Range of the number of this sequence [0..n-1]
      * @param k length of the sequence
@@ -48,14 +50,21 @@ public class PermGenerator_v2 implements P_ADT {
         range = n;
         HEIGHT = k;
 
-
         reset();
     }
 
     @Override
     public boolean hasMore() {
+        if (HEIGHT == 0) {
+            return !didGenerateTheEmpty;
+        }
+
         int max = range - 1;
         if (range > HEIGHT) {
+            if (HEIGHT == 1) {
+                return permutation[0] != max;
+            }
+
             return !(permutation[0] == max && permutation[HEIGHT - 1] == max - 1);
         }
 
@@ -68,6 +77,10 @@ public class PermGenerator_v2 implements P_ADT {
             throw new InvalidStateException("No more elements.");
         }
 
+        if (HEIGHT == 0) {
+            didGenerateTheEmpty = true;
+            return permutation;
+        }
 
         boolean wentUp = level == HEIGHT;
         level = level == HEIGHT ? level - 1 : level;
@@ -97,7 +110,8 @@ public class PermGenerator_v2 implements P_ADT {
             }
         }
 
-        return permutation;
+        // Defensive copy, in case the user tries to change the value.
+        return Arrays.copyOf(permutation, permutation.length);
     }
 
     private boolean isUsed(int n) {
@@ -109,5 +123,6 @@ public class PermGenerator_v2 implements P_ADT {
         Arrays.fill(permutation, 0);
         Arrays.fill(used, 0);
         level = 0;
+        didGenerateTheEmpty = false;
     }
 }

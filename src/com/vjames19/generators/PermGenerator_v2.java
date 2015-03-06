@@ -1,7 +1,5 @@
 package com.vjames19.generators;
 
-import sun.plugin.dom.exception.InvalidStateException;
-
 import java.util.Arrays;
 
 /**
@@ -72,9 +70,9 @@ public class PermGenerator_v2 implements P_ADT {
     }
 
     @Override
-    public int[] next() throws InvalidStateException {
+    public int[] next() throws IllegalStateException {
         if (!hasMore()) {
-            throw new InvalidStateException("No more elements.");
+            throw new IllegalStateException("No more elements.");
         }
 
         if (HEIGHT == 0) {
@@ -124,5 +122,21 @@ public class PermGenerator_v2 implements P_ADT {
         Arrays.fill(used, 0);
         level = 0;
         didGenerateTheEmpty = false;
+    }
+
+    public static void main(String[] args) {
+        int n = 3;
+        int k = 3;
+        if (args.length < 1) {
+            System.out.println("Usage: [n] [k]");
+        } else {
+            n = Integer.parseInt(args[0]);
+            k = Integer.parseInt(args[1]);
+        }
+
+        P_ADT seq = new PermGenerator_v2(n, k);
+        while (seq.hasMore()) {
+            System.out.println(Arrays.toString(seq.next()));
+        }
     }
 }

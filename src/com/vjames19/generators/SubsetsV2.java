@@ -1,6 +1,6 @@
 package com.vjames19.generators;
 
-import sun.plugin.dom.exception.InvalidStateException;
+import java.util.Arrays;
 
 /**
  * Generates the power set of given set of numbers in the range [1..n].
@@ -36,9 +36,9 @@ public class SubsetsV2 implements P_ADT {
     }
 
     @Override
-    public int[] next() throws InvalidStateException {
+    public int[] next() throws IllegalStateException {
         if (!hasMore()) {
-            throw new InvalidStateException("No more elements.");
+            throw new IllegalStateException("No more elements.");
         }
 
         int[] subset = currentGenerator.next();
@@ -64,5 +64,19 @@ public class SubsetsV2 implements P_ADT {
 
     private void createSubsetGenerator() {
         currentGenerator = new PermGenerator_v2(n, currentSetLength);
+    }
+
+    public static void main(String[] args) {
+        int n = 3;
+        if (args.length < 1) {
+            System.out.println("Usage: [n]");
+        } else {
+            n = Integer.parseInt(args[0]);
+        }
+
+        P_ADT seq = new SubsetsV2(n);
+        while (seq.hasMore()) {
+            System.out.println(Arrays.toString(seq.next()));
+        }
     }
 }

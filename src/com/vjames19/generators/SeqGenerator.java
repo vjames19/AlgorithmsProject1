@@ -1,7 +1,5 @@
 package com.vjames19.generators;
 
-import sun.plugin.dom.exception.InvalidStateException;
-
 import java.util.Arrays;
 
 /**
@@ -49,9 +47,9 @@ public class SeqGenerator implements P_ADT {
     }
 
     @Override
-    public int[] next() throws InvalidStateException {
+    public int[] next() throws IllegalStateException {
         if (!hasMore()) {
-            throw new InvalidStateException("No more elements.");
+            throw new IllegalStateException("No more elements.");
         }
 
         int[] current = Arrays.copyOf(sequence, sequence.length);
@@ -76,5 +74,21 @@ public class SeqGenerator implements P_ADT {
     public void reset() {
         hasMore = true;
         Arrays.fill(sequence, 0);
+    }
+
+    public static void main(String[] args) {
+        int n = 3;
+        int k = 3;
+        if (args.length < 1) {
+            System.out.println("Usage: [n] [k]");
+        } else {
+            n = Integer.parseInt(args[0]);
+            k = Integer.parseInt(args[1]);
+        }
+
+        P_ADT seq = new SeqGenerator(n, k);
+        while (seq.hasMore()) {
+            System.out.println(Arrays.toString(seq.next()));
+        }
     }
 }

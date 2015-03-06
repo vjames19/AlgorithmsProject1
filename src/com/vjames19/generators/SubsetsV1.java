@@ -1,9 +1,9 @@
 package com.vjames19.generators;
 
 import com.vjames19.Utils;
-import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,9 +32,9 @@ public class SubsetsV1 implements P_ADT {
     }
 
     @Override
-    public int[] next() throws InvalidStateException {
+    public int[] next() throws IllegalStateException {
         if (!hasMore()) {
-            throw new InvalidStateException("No more elements.");
+            throw new IllegalStateException("No more elements.");
         }
 
         int[] sequence = generator.next();
@@ -52,5 +52,19 @@ public class SubsetsV1 implements P_ADT {
     @Override
     public void reset() {
         generator.reset();
+    }
+
+    public static void main(String[] args) {
+        int n = 3;
+        if (args.length < 1) {
+            System.out.println("Usage: [n]");
+        } else {
+            n = Integer.parseInt(args[0]);
+        }
+
+        P_ADT seq = new SubsetsV1(n);
+        while (seq.hasMore()) {
+            System.out.println(Arrays.toString(seq.next()));
+        }
     }
 }

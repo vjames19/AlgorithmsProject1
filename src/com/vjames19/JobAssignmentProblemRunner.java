@@ -21,7 +21,7 @@ public class JobAssignmentProblemRunner {
 
     public static void main(String[] args) {
         long minute = TimeUnit.MINUTES.toNanos(1);
-        int n = 8;
+        int n = 1;
         long executionTime = 0;
         Timer timer = new Timer();
 

@@ -19,8 +19,4 @@ public class Utils {
 
         return array;
     }
-
-    public static <T extends Comparable<T>> boolean isGreater(T c1, T c2) {
-        return c1.compareTo(c2) > 0;
-    }
 }
